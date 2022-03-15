@@ -1,0 +1,3 @@
+rootProject.name = "HookApplication"
+include ':Proxy_Guard_Tools'
+include ':Proxy_Guard_Core'

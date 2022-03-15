@@ -6,6 +6,7 @@ from python.plugin.APKSignerPlugin import APKSignerPlugin
 from python.plugin.FilePlugin import FilePlugin
 
 
+# 基准包
 class JZBApplication(Thread):
 
     def __init__(self, apk_name, signer_file, apk_dir=None):
