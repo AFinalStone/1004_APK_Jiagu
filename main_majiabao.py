@@ -1,8 +1,8 @@
-from python.plugin.APKSignerPlugin import APKSignerPlugin
+from python.plugin.APKPlugin import APKPlugin
 
 if __name__ == '__main__':
     apk_name = "米心直播.apk"
-    APKSignerPlugin.unzip_apk_file(apk_name, "米心直播02")
+    APKPlugin.unzip_apk_file(apk_name, "米心直播02")
     # signature_file = "奇乐直播.jks"
     # print("1.请确认电脑已经安装了JDK，并配置了java环境变量")
     # print("2.请确保底包文件为奇乐直播.apk，并放到当前目录下")

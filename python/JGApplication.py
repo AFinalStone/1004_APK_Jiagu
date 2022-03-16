@@ -5,6 +5,7 @@ from androguard.core.bytecodes.apk import APK
 from lxml import etree
 
 from python.plugin.AESPlugin import AESPlugin
+from python.plugin.APKPlugin import APKPlugin
 from python.plugin.FilePlugin import FilePlugin
 from python.plugin.ZipPlugin import ZipPlugin
 
@@ -12,23 +13,15 @@ from python.plugin.ZipPlugin import ZipPlugin
 # 加固
 class JGApplication(Thread):
 
-    def __init__(self, apk_name, signer_file=None, apk_dir=None):
-        self.apk_name = apk_name
-        self.signer_file = signer_file
-        if apk_dir is None:
-            self.apk_dir = apk_name.replace(".apk", "")
-
-    # 修改manifest文件
     @staticmethod
-    def get_apk_info(apk_file_name):
-        apk = APK(apk_file_name)
-        apk_package = apk.get_package()
-        app_version_name = apk.get_androidversion_name()
-        return apk_package, app_version_name
-
-    # 修改manifest文件
-    @staticmethod
-    def change_apk_manifest_app(apk_file_name, proxy_application_name=None):
+    def change_apk_manifest_app(apk_file_name, output_file, proxy_application_name=None):
+        """
+        修改apk中的manifest文件，并导出
+        :param apk_file_name:
+        :param output_file:
+        :param proxy_application_name:
+        :return:
+        """
         apk = APK(apk_file_name)
         android_manifest_axml = apk.get_android_manifest_axml()
         ele_root = android_manifest_axml.get_xml_obj()
@@ -49,16 +42,22 @@ class JGApplication(Thread):
         etree.SubElement(ele_application, _tag='meta-data',
                          attrib={element_key_name: 'app_package', element_key_value: apk_package})
         axml_byte_buffer = etree.tostring(ele_root, pretty_print=True, encoding="utf-8")
-        FilePlugin.wirte_byte_to_file(axml_byte_buffer, "AndroidManifest_.xml")
+        FilePlugin.wirte_byte_to_file(axml_byte_buffer, output_file)
 
-    # 修改manifest文件
     @staticmethod
-    def change_apk_manifest_txt(android_manifest_file, android_manifest_output_file, proxy_application_name=None,
-                                apk_package=None,
-                                app_version_name=None,
-                                ):
-        # 获取原始app的数据，修改xml内容
-        # 使用minidom解析器打开 XML 文档
+    def change_apk_manifest_txt(android_manifest_file, proxy_application_name=None, apk_package=None,
+                                app_version_name=None, output_file=None):
+        """
+        修改manifest.xml文件
+        :param android_manifest_file:
+        :param proxy_application_name:
+        :param apk_package:
+        :param app_version_name:
+        :param output_file:
+        :return:
+        """
+        if output_file is None:
+            output_file = android_manifest_file
         ele_root = etree.parse(android_manifest_file)
         ele_application = ele_root.find("application")
         if apk_package is None or app_version_name is None or proxy_application_name is None:
@@ -68,6 +67,7 @@ class JGApplication(Thread):
         element_key_name = '{http://schemas.android.com/apk/res/android}name'
         element_key_value = '{http://schemas.android.com/apk/res/android}value'
         ele_application.set(element_key_name, proxy_application_name)
+
         etree.SubElement(ele_application, _tag='meta-data',
                          attrib={element_key_name: 'app_name', element_key_value: application_name})
         etree.SubElement(ele_application, _tag='meta-data',
@@ -75,14 +75,21 @@ class JGApplication(Thread):
         etree.SubElement(ele_application, _tag='meta-data',
                          attrib={element_key_name: 'app_package', element_key_value: apk_package})
         axml_byte_buffer = etree.tostring(ele_root, pretty_print=True, encoding="utf-8")
-        FilePlugin.wirte_byte_to_file(axml_byte_buffer, android_manifest_output_file)
+        FilePlugin.wirte_byte_to_file(axml_byte_buffer, output_file)
 
-    # 修改dex文件
     @staticmethod
-    def change_apk_dex(apk_file_name, key, key_iv, new_apk_file_name=None):
+    def change_apk_dex_by_python(apk_file_name, key, key_iv, new_apk_file_name=None):
+        """
+        加密dex文件为xed文件
+        :param apk_file_name:
+        :param key:
+        :param key_iv:
+        :param new_apk_file_name:
+        :return:
+        """
         if new_apk_file_name is None:
             new_apk_file_name = apk_file_name.replace(".apk", "._apk")
-        output_dir = apk_file_name.replace(".apk", "")
+        output_dir = apk_file_name.replace(".apk", "_temp")
         ZipPlugin.un_zip_file(apk_file_name, output_dir)
         aesPlugin = AESPlugin(key, key_iv)
         for root, dirs, files in os.walk(output_dir):
@@ -93,5 +100,30 @@ class JGApplication(Thread):
                     decrypt_content = aesPlugin.encrypt_byte(bytes)
                     os.remove(file_path)
                     FilePlugin.wirte_byte_to_file(decrypt_content, file_path.replace(".dex", ".xed"))
-        FilePlugin.copyfile("classes.dex", "米心直播\\classes.dex")
         ZipPlugin.make_zip_dir_files(output_dir, new_apk_file_name)
+        os.removedirs(output_dir)
+
+    @staticmethod
+    def change_apk_dex_by_java(apk_file_name, proxy_app_aar, new_apk_file_name=None):
+        """
+        加密dex文件为xed文件
+        :param proxy_app_aar:
+        :param apk_file_name:
+        :param new_apk_file_name:
+        :return:
+        """
+        if new_apk_file_name is None:
+            new_apk_file_name = apk_file_name.replace(".apk", "_01.apk")
+        app_name, apk_package, app_version_name = APKPlugin.get_apk_info(apk_file_name)
+        package_middle = apk_package.split(".")[1]
+        # old_package = "proxycore"
+        # new_package = "proxy" + package_middle
+        # HookModulePlugin.change_hook_app_package(old_package, new_package)
+        # HookModulePlugin.make_proxy_core_app()
+        # HookModulePlugin.change_hook_app_package(new_package, old_package)
+        # proxy_app_aar = "HookApplication/Proxy_Core/build/outputs/aar/Proxy_Core-release.aar"
+        cmd_aes_dex = f'java -jar lib\\apk_proxy_tools.jar {apk_file_name} {proxy_app_aar} {package_middle} {new_apk_file_name}'
+        if os.system(cmd_aes_dex) == 0:
+            print("dex文件加密成功")
+        else:
+            print("dex文件加密失败")

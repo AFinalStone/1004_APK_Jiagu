@@ -1,3 +1,4 @@
 rootProject.name = "HookApplication"
-include ':Proxy_Guard_Tools'
-include ':Proxy_Guard_Core'
+include ':Proxy_Tools'
+include ':Proxy_Core'
+include ':AXMLPrinter'

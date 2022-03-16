@@ -1,6 +1,5 @@
-from python.plugin.APKSignerPlugin import APKSignerPlugin
-from python.plugin.FilePlugin import FilePlugin
 from python.JZBApplication import JZBApplication
+from python.plugin.FilePlugin import FilePlugin
 
 if __name__ == '__main__':
     apk_name = "奇乐直播.apk"

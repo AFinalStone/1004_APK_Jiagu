@@ -86,3 +86,45 @@ class FilePlugin(object):
             shutil.copyfile(srcfile, dstfile)
         else:
             shutil.copyfile(srcfile, dstfile)
+
+    @staticmethod
+    def replace_folder_name(filePath, old_name, new_name):
+        """
+        替换文件夹名称
+        :param filePath:
+        :param old_name:
+        :param new_name:
+        :return:
+        """
+        for root, dirs, files in os.walk(filePath):
+            for dir in dirs:
+                old_dir = os.path.join(root, dir)  # 原来的文件路径
+                print("old_dir=" + old_dir)
+                new_dir = old_dir.replace(old_name, new_name)
+                print("new_dir=" + new_dir)
+                if old_dir != new_dir:
+                    os.rename(old_dir, new_dir)  # 重命名
+
+    @staticmethod
+    def replace_file_content(filePath, old_name, new_name):
+        """
+        替换文件内容
+        :param filePath:
+        :param old_name:
+        :param new_name:
+        :return:
+        """
+        for root, dirs, files in os.walk(filePath):
+            for file in files:
+                filename = os.path.join(root, file)
+                if filename.endswith('.java') or filename.endswith('.xml') or filename.endswith(
+                        '.json') or filename.endswith('.pro'):
+                    fileRead = open(filename, 'r', encoding='UTF-8')
+                    lines = fileRead.readlines()
+                    fileWrite = open(filename, 'w', encoding='UTF-8')
+                    for s in lines:
+                        result = s.replace(old_name, new_name)
+                        print(result)
+                        fileWrite.write(result)  # replace是替换，write是写入
+                    fileRead.close()
+                    fileWrite.close()  # 关闭文件

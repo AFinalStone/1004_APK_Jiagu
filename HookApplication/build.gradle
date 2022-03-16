@@ -8,18 +8,9 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        // 友盟sdk新maven仓库地址
-        maven { url 'https://repo1.maven.org/maven2/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions: 0.8.2"
-        //资源名称加密
-        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.17'
-        //字符串加密插件
-//        classpath "com.yr.strplugin:str-encry-plugin:1.0.1"
-        classpath 'io.github.didi.dokit:dokitx-plugin:3.5.0.1'
     }
 }
 
@@ -28,11 +19,6 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        maven { url 'https://jitpack.io' }
-        // 友盟sdk新maven仓库地址
-        maven { url 'https://repo1.maven.org/maven2/' }
     }
 }
 

@@ -1,0 +1,12 @@
+apply plugin: 'java-library'
+apply plugin: 'java'
+
+jar {
+    manifest {
+        // 这里指定main class
+        attributes 'Main-Class': 'test.AXMLPrinter'
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
