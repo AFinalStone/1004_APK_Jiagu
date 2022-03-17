@@ -1,7 +1,6 @@
 import os
-
-
-# from androguard.core.bytecodes.apk import APK
+import xml.dom.minidom
+from xml.dom.minidom import parse
 
 
 class APKPlugin(object):
@@ -82,15 +81,20 @@ class APKPlugin(object):
             raise Exception("jar文件转化失败")
 
     @staticmethod
-    def get_apk_info(apk_file_name):
+    def get_apk_info(android_manifest_file):
         """
         获取原始apk的信息
-        :param apk_file_name:
+        :param android_manifest_file:
         :return:
         """
-        app_name = "com.example.shellapplication.MIApplication"
-        apk_package = "com.example.shellapplication"
-        app_version_name = "1.0.0"
+        # 使用minidom解析器打开 XML 文档
+        DOMTree = xml.dom.minidom.parse(android_manifest_file)
+        collection = DOMTree.documentElement
+        apk_package = collection.getAttribute("package")
+        app_version_name = collection.getAttribute("{http://schemas.android.com/apk/res/android}versionName")
+        ele_application = collection.getElementsByTagName("application")
+        app_name = ele_application.getAttribute("{http://schemas.android.com/apk/res/android}name")
+
         return app_name, apk_package, app_version_name
 
     # @staticmethod

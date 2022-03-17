@@ -1,5 +1,4 @@
 import os
-from threading import Thread
 
 from lxml import etree
 
@@ -10,7 +9,7 @@ from python.plugin.ZipPlugin import ZipPlugin
 
 
 # 加固
-class JGApplication(Thread):
+class JGApplication:
 
     # @staticmethod
     # def change_apk_manifest_app(apk_file_name, output_file, proxy_application_name=None):
@@ -126,3 +125,6 @@ class JGApplication(Thread):
             print("dex文件加密成功")
         else:
             print("dex文件加密失败")
+
+
+

@@ -2,6 +2,7 @@
 import os
 import re
 
+from python.plugin.FilePlugin import FilePlugin
 from python.plugin.GitPlugin import GitPlugin
 
 
@@ -19,10 +20,10 @@ class MakeApkApplication(object):
         f.close()
 
     @staticmethod
-    def makeApk(git_clone_address, target_branch, sdk_path, gradle_path="gradle", gradle_task=None):
-        pattern = re.compile('[a-zA-Z0-9]/[a-zA-Z0-9]*.git')  # 查找数字
-        code_dir_list = pattern.search(git_clone_address).group()
-        code_dir = code_dir_list.replace(".git", "").replace("/", "")[1:]
+    def makeApk(git_clone_address, target_branch, sdk_path, gradle_path="gradle", gradle_task="build", source_apk=None):
+        pattern = re.compile('[a-zA-Z0-9]/[a-zA-Z0-9]*.git')
+        code_dir = pattern.search(git_clone_address).group()
+        code_dir = code_dir.replace(".git", "").replace("/", "")[1:]
         print(code_dir)
         if os.path.exists(code_dir) is False:
             GitPlugin.git_clone(git_clone_address)
@@ -30,8 +31,10 @@ class MakeApkApplication(object):
         origin_cwd = os.getcwd()
         os.chdir(code_dir)
         GitPlugin.git_check(target_branch)
-        if gradle_task is None:
-            gradle_task = "app:assembleRelease"
         cmd = f'{gradle_path} {gradle_task}'
         os.system(cmd)
         os.chdir(origin_cwd)
+        if source_apk is None:
+            source_apk = "app/build/outputs/apk/release/app-release.apk"
+        source_apk = code_dir + "/" + source_apk
+        FilePlugin.copyfile(source_apk, "app_release.apk")

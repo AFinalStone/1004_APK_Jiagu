@@ -79,9 +79,12 @@ class FilePlugin(object):
         """
         if not os.path.isfile(srcfile):
             print("%s not exit!" % (srcfile))
+            return
+        if dstfile.find("/") == -1:
+            fpath, fname = None, dstfile
         else:
             fpath, fname = os.path.split(dstfile)
-        if not os.path.exists(fpath):
+        if fpath is not None and not os.path.exists(fpath):
             os.makedirs(fpath)
             shutil.copyfile(srcfile, dstfile)
         else:
