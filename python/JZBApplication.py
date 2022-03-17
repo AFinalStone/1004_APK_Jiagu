@@ -2,7 +2,7 @@ import os
 import re
 from threading import Thread
 
-from python.plugin.APKSignerPlugin import APKSignerPlugin
+from python.plugin.APKPlugin import APKPlugin
 from python.plugin.FilePlugin import FilePlugin
 
 
@@ -27,9 +27,9 @@ class JZBApplication(Thread):
             print("新的应用名称不能为空")
             return
         try:
-            APKSignerPlugin.unzip_apk_file(self.apk_name, self.apk_dir)
+            APKPlugin.unzip_apk_file(self.apk_name, self.apk_dir)
             self.__change_app_name(new_apk_name)
-            APKSignerPlugin.zip_and_signer_apk_file(self.signer_file, self.apk_dir, new_apk_name + ".apk")
+            APKPlugin.zip_and_signer_apk_file(self.signer_file, self.apk_dir, new_apk_name + ".apk")
         except Exception as err:
             # 可能是缺少JDK或者jar包
             print(str(err) + "，可能是缺少JDK或者Jar包")

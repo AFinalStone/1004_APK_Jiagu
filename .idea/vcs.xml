@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ShellApplication" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/michat-master" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/test/apk_code_dir" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/test/apk_dir" vcs="Git" />

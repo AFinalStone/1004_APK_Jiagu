@@ -1,6 +1,7 @@
 import os
 
-from androguard.core.bytecodes.apk import APK
+
+# from androguard.core.bytecodes.apk import APK
 
 
 class APKPlugin(object):
@@ -87,8 +88,20 @@ class APKPlugin(object):
         :param apk_file_name:
         :return:
         """
-        apk = APK(apk_file_name)
-        app_name = apk.get_app_name()
-        apk_package = apk.get_package()
-        app_version_name = apk.get_androidversion_name()
+        app_name = "com.example.shellapplication.MIApplication"
+        apk_package = "com.example.shellapplication"
+        app_version_name = "1.0.0"
         return app_name, apk_package, app_version_name
+
+    # @staticmethod
+    # def get_apk_info(apk_file_name):
+    #     """
+    #     获取原始apk的信息
+    #     :param apk_file_name:
+    #     :return:
+    #     """
+    #     apk = APK(apk_file_name)
+    #     app_name = apk.get_app_name()
+    #     apk_package = apk.get_package()
+    #     app_version_name = apk.get_androidversion_name()
+    #     return app_name, apk_package, app_version_name

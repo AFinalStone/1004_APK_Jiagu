@@ -30,6 +30,19 @@ class ZipPlugin(object):
         zip_file.write(file)
         zip_file.close()
 
+    # 打包目录为zip文件
+    @staticmethod
+    def make_zip(file, output_file):
+        """
+        压缩指定文件夹
+        :param dirpath: 目标文件夹绝对路径
+        :param outFullName: 压缩文件绝对路径+filename.zip
+        :return: 无
+        """
+        zip_file = zipfile.ZipFile(output_file, 'w', zipfile.ZIP_DEFLATED)
+        zip_file.write(file)
+        zip_file.close()
+
     @staticmethod
     def un_zip_file(filename, output_dir):
         z_file = zipfile.ZipFile(filename, "r")

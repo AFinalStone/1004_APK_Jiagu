@@ -1,7 +1,6 @@
 import os
 from threading import Thread
 
-from androguard.core.bytecodes.apk import APK
 from lxml import etree
 
 from python.plugin.AESPlugin import AESPlugin
@@ -13,36 +12,36 @@ from python.plugin.ZipPlugin import ZipPlugin
 # 加固
 class JGApplication(Thread):
 
-    @staticmethod
-    def change_apk_manifest_app(apk_file_name, output_file, proxy_application_name=None):
-        """
-        修改apk中的manifest文件，并导出
-        :param apk_file_name:
-        :param output_file:
-        :param proxy_application_name:
-        :return:
-        """
-        apk = APK(apk_file_name)
-        android_manifest_axml = apk.get_android_manifest_axml()
-        ele_root = android_manifest_axml.get_xml_obj()
-        # 获取原始app的数据，修改xml内容
-        ele_application = ele_root.find('application')
-        application_name = ele_application.attrib.get("{http://schemas.android.com/apk/res/android}name")
-        apk_package = apk.get_package()
-        app_version_name = apk.get_androidversion_name()
-        if proxy_application_name is None:
-            proxy_application_name = "com.proxymder.core.ProxyApplication"
-        element_key_name = '{http://schemas.android.com/apk/res/android}name'
-        element_key_value = '{http://schemas.android.com/apk/res/android}value'
-        ele_application.set(element_key_name, proxy_application_name)
-        etree.SubElement(ele_application, _tag='meta-data',
-                         attrib={element_key_name: 'app_name', element_key_value: application_name})
-        etree.SubElement(ele_application, _tag='meta-data',
-                         attrib={element_key_name: 'app_version', element_key_value: app_version_name})
-        etree.SubElement(ele_application, _tag='meta-data',
-                         attrib={element_key_name: 'app_package', element_key_value: apk_package})
-        axml_byte_buffer = etree.tostring(ele_root, pretty_print=True, encoding="utf-8")
-        FilePlugin.wirte_byte_to_file(axml_byte_buffer, output_file)
+    # @staticmethod
+    # def change_apk_manifest_app(apk_file_name, output_file, proxy_application_name=None):
+    #     """
+    #     修改apk中的manifest文件，并导出
+    #     :param apk_file_name:
+    #     :param output_file:
+    #     :param proxy_application_name:
+    #     :return:
+    #     """
+    #     apk = APK(apk_file_name)
+    #     android_manifest_axml = apk.get_android_manifest_axml()
+    #     ele_root = android_manifest_axml.get_xml_obj()
+    #     # 获取原始app的数据，修改xml内容
+    #     ele_application = ele_root.find('application')
+    #     application_name = ele_application.attrib.get("{http://schemas.android.com/apk/res/android}name")
+    #     apk_package = apk.get_package()
+    #     app_version_name = apk.get_androidversion_name()
+    #     if proxy_application_name is None:
+    #         proxy_application_name = "com.proxymder.core.ProxyApplication"
+    #     element_key_name = '{http://schemas.android.com/apk/res/android}name'
+    #     element_key_value = '{http://schemas.android.com/apk/res/android}value'
+    #     ele_application.set(element_key_name, proxy_application_name)
+    #     etree.SubElement(ele_application, _tag='meta-data',
+    #                      attrib={element_key_name: 'app_name', element_key_value: application_name})
+    #     etree.SubElement(ele_application, _tag='meta-data',
+    #                      attrib={element_key_name: 'app_version', element_key_value: app_version_name})
+    #     etree.SubElement(ele_application, _tag='meta-data',
+    #                      attrib={element_key_name: 'app_package', element_key_value: apk_package})
+    #     axml_byte_buffer = etree.tostring(ele_root, pretty_print=True, encoding="utf-8")
+    #     FilePlugin.wirte_byte_to_file(axml_byte_buffer, output_file)
 
     @staticmethod
     def change_apk_manifest_txt(android_manifest_file, proxy_application_name=None, apk_package=None,
