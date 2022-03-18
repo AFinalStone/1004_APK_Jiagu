@@ -3,9 +3,7 @@ import os
 from lxml import etree
 
 from python.plugin.AESPlugin import AESPlugin
-from python.plugin.APKPlugin import APKPlugin
 from python.plugin.FilePlugin import FilePlugin
-from python.plugin.ZipPlugin import ZipPlugin
 
 
 # 加固
@@ -76,55 +74,48 @@ class JGApplication:
         FilePlugin.wirte_byte_to_file(axml_byte_buffer, output_file)
 
     @staticmethod
-    def change_apk_dex_by_python(apk_file_name, key, key_iv, new_apk_file_name=None):
+    def encrypt_dex(path, key, key_iv):
         """
         加密dex文件为xed文件
-        :param apk_file_name:
+        :param path:
         :param key:
         :param key_iv:
-        :param new_apk_file_name:
         :return:
         """
-        if new_apk_file_name is None:
-            new_apk_file_name = apk_file_name.replace(".apk", "._apk")
-        output_dir = apk_file_name.replace(".apk", "_temp")
-        ZipPlugin.un_zip_file(apk_file_name, output_dir)
         aesPlugin = AESPlugin(key, key_iv)
-        for root, dirs, files in os.walk(output_dir):
-            for file in files:
-                file_path = os.path.join(root, file)  # 原来的文件路径
-                if file_path.find(".dex") != -1:
-                    bytes = FilePlugin.read_byte_from_file(file_path)
-                    decrypt_content = aesPlugin.encrypt_byte(bytes)
-                    os.remove(file_path)
-                    FilePlugin.wirte_byte_to_file(decrypt_content, file_path.replace(".dex", ".xed"))
-        ZipPlugin.make_zip_dir_files(output_dir, new_apk_file_name)
-        os.removedirs(output_dir)
-
-    @staticmethod
-    def change_apk_dex_by_java(apk_file_name, proxy_app_aar, new_apk_file_name=None):
-        """
-        加密dex文件为xed文件
-        :param proxy_app_aar:
-        :param apk_file_name:
-        :param new_apk_file_name:
-        :return:
-        """
-        if new_apk_file_name is None:
-            new_apk_file_name = apk_file_name.replace(".apk", "_01.apk")
-        app_name, apk_package, app_version_name = APKPlugin.get_apk_info(apk_file_name)
-        package_middle = apk_package.split(".")[1]
-        # old_package = "proxycore"
-        # new_package = "proxy" + package_middle
-        # HookModulePlugin.change_hook_app_package(old_package, new_package)
-        # HookModulePlugin.make_proxy_core_app()
-        # HookModulePlugin.change_hook_app_package(new_package, old_package)
-        # proxy_app_aar = "HookApplication/Proxy_Core/build/outputs/aar/Proxy_Core-release.aar"
-        cmd_aes_dex = f'java -jar lib\\apk_proxy_tools.jar {apk_file_name} {proxy_app_aar} {package_middle} {new_apk_file_name}'
-        if os.system(cmd_aes_dex) == 0:
-            print("dex文件加密成功")
+        if os.path.isfile(path):
+            if path.find(".dex") != -1:
+                aesPlugin.encrypt_byte_by_jar(path, path.replace(".dex", ".xed"))
         else:
-            print("dex文件加密失败")
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    file_path = os.path.join(root, file)  # 原来的文件路径
+                    if file_path.find(".dex") != -1:
+                        # bytes = FilePlugin.read_byte_from_file(file_path)
+                        aesPlugin.encrypt_byte_by_jar(file_path, file_path.replace(".dex", ".xed"))
+                        os.remove(file_path)
 
-
-
+    # @staticmethod
+    # def change_apk_dex_by_java(apk_file_name, proxy_app_aar, new_apk_file_name=None):
+    #     """
+    #     加密dex文件为xed文件
+    #     :param proxy_app_aar:
+    #     :param apk_file_name:
+    #     :param new_apk_file_name:
+    #     :return:
+    #     """
+    #     if new_apk_file_name is None:
+    #         new_apk_file_name = apk_file_name.replace(".apk", "_01.apk")
+    #     app_name, apk_package, app_version_name = APKPlugin.get_apk_info(apk_file_name)
+    #     package_middle = apk_package.split(".")[1]
+    #     # old_package = "proxycore"
+    #     # new_package = "proxy" + package_middle
+    #     # HookModulePlugin.change_hook_app_package(old_package, new_package)
+    #     # HookModulePlugin.make_proxy_core_app()
+    #     # HookModulePlugin.change_hook_app_package(new_package, old_package)
+    #     # proxy_app_aar = "HookApplication/Proxy_Core/build/outputs/aar/Proxy_Core-release.aar"
+    #     cmd_aes_dex = f'java -jar lib\\apk_proxy_tools.jar {apk_file_name} {proxy_app_aar} {package_middle} {new_apk_file_name}'
+    #     if os.system(cmd_aes_dex) == 0:
+    #         print("dex文件加密成功")
+    #     else:
+    #         print("dex文件加密失败")

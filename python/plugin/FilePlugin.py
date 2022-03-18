@@ -2,7 +2,7 @@ import os
 import shutil
 
 
-class FilePlugin(object):
+class FilePlugin:
     FILE_NAME_PATTERN = r"[\/\\\:\*\?\"\<\>\|]"
 
     @staticmethod
@@ -70,7 +70,7 @@ class FilePlugin(object):
         return content
 
     @staticmethod
-    def copyfile(srcfile, dstfile):
+    def copy_file(srcfile, dstfile):
         """
         拷贝文件
         :param srcfile:
@@ -89,6 +89,26 @@ class FilePlugin(object):
             shutil.copyfile(srcfile, dstfile)
         else:
             shutil.copyfile(srcfile, dstfile)
+
+    @staticmethod
+    def move_file(srcfile, dstfile):
+        """
+        移除文件/文件夹
+        :param path:
+        :return:
+        """
+        if not os.path.isfile(srcfile):
+            print("%s not exit!" % (srcfile))
+            return
+        if dstfile.find("/") == -1:
+            fpath, fname = None, dstfile
+        else:
+            fpath, fname = os.path.split(dstfile)
+        if fpath is not None and not os.path.exists(fpath):
+            os.makedirs(fpath)
+            shutil.move(srcfile, dstfile)
+        else:
+            shutil.move(srcfile, dstfile)
 
     @staticmethod
     def replace_folder_name(filePath, old_name, new_name):
@@ -131,3 +151,16 @@ class FilePlugin(object):
                         fileWrite.write(result)  # replace是替换，write是写入
                     fileRead.close()
                     fileWrite.close()  # 关闭文件
+
+    @staticmethod
+    def remove_path_file(path):
+        """
+        移除文件/文件夹
+        :param path:
+        :return:
+        """
+        if os.path.exists(path):
+            if os.path.isfile(path):
+                os.remove(path)
+            else:
+                shutil.rmtree(path)

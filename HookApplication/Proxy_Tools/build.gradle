@@ -10,7 +10,7 @@ dependencies {
 jar {
     manifest {
         // 这里指定main class
-        attributes 'Main-Class': 'com.proxytools.tools.JiaGu'
+        attributes 'Main-Class': 'com.proxytools.tools.Encrypt'
     }
 }
 

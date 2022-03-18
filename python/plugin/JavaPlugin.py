@@ -1,4 +1,4 @@
-class JavaPlugin(object):
+class JavaPlugin:
 
     @staticmethod
     def run_jar_main(jar_file_name, args):

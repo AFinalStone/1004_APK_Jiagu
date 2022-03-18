@@ -1,7 +1,7 @@
 import os
 
 
-class GitPlugin(object):
+class GitPlugin:
 
     @staticmethod
     def git_clone(code_address):

@@ -76,5 +76,5 @@ class JZBApplication(Thread):
             print("软件logo修改失败")
         else:
             os.remove(logo_file_path)
-            FilePlugin.copyfile(new_logo_path, logo_file_path)
+            FilePlugin.copy_file(new_logo_path, logo_file_path)
             print("成功修改软件logo")

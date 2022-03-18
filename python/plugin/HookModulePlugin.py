@@ -3,7 +3,7 @@ import os
 from python.plugin.FilePlugin import FilePlugin
 
 
-class HookModulePlugin(object):
+class HookModulePlugin:
 
     @staticmethod
     def change_hook_app_package(old_package, new_package):

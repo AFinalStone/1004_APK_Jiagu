@@ -37,4 +37,4 @@ class MakeApkApplication(object):
         if source_apk is None:
             source_apk = "app/build/outputs/apk/release/app-release.apk"
         source_apk = code_dir + "/" + source_apk
-        FilePlugin.copyfile(source_apk, "app_release.apk")
+        FilePlugin.copy_file(source_apk, "app_release.apk")

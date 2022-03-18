@@ -1,28 +1,47 @@
 from python.JGApplication import JGApplication
 from python.plugin.APKPlugin import APKPlugin
+from python.plugin.FilePlugin import FilePlugin
+from python.plugin.ZipPlugin import ZipPlugin
 from python.utils.CacheUtil import CacheUtil
 
 if __name__ == '__main__':
-    cache_util = CacheUtil("jiagu_apk_info")
-    # cache_util.save_value_to_cache("apk_file_name", "奇乐直播.apk")
-    # cache_util.save_value_to_cache("signature_file", "签名文件.jks")
-    # cache_util.save_value_to_cache("proxy_application_name", "com.proxycore.core.ProxyApplication")
-    # cache_util.save_value_to_cache("proxy_aar_file", "ProxyApplication.aar")
+    cache_util = CacheUtil("jiagu_apk_info", "main_jiagu.ini")
     apk_file_name = cache_util.read_value_from_cache("apk_file_name")
     signature_file = cache_util.read_value_from_cache("signature_file")
     proxy_application_name = cache_util.read_value_from_cache("proxy_application_name")
     proxy_aar_file = cache_util.read_value_from_cache("proxy_aar_file")
-
+    aes_key = cache_util.read_value_from_cache("aes_key")
+    aes_iv = cache_util.read_value_from_cache("aes_iv")
+    print("1.请确认电脑已经安装了JDK，并配置了java环境变量")
+    print(f"2.当前配置的apk文件为 {apk_file_name}")
+    print(f"3.当前配置的签名文件为 {signature_file}")
+    print(f"4.当前配置的代理application为 {proxy_application_name}")
+    print(f"5.当前配置的代理aar文件为 {proxy_aar_file}")
+    print(f"5.当前配置的代理AES加密算法key= {aes_key}")
+    print(f"5.当前配置的代理AES加密算法iv= {aes_iv}")
+    input("输入任意内容以便开始任务")
     apk_file_dir = apk_file_name.replace(".apk", "")
-    APKPlugin.unzip_apk_file(apk_file_name, apk_file_dir)
+    FilePlugin.remove_path_file(apk_file_dir)
+    ZipPlugin.un_zip_file(apk_file_name, apk_file_dir)
     axml_file = f"{apk_file_dir}\\AndroidManifest.xml"
-    apk_name, apk_package, app_version_name = APKPlugin.get_apk_info(axml_file)
-    print(apk_name)
-    print(apk_package)
-    print(app_version_name)
-    # JGApplication.change_apk_manifest_txt(axml_file, proxy_application_name, apk_package, app_version_name)
-
-    # new_apk_file_name = apk_file_name.replace(".apk", "_shell.apk")
-    # new_apk_file_dir = apk_file_name.replace(".apk", "")
-    # JGApplication.change_apk_dex_by_java(apk_file_name, proxy_aar_file, new_apk_file_name)
-    # APKPlugin.zip_and_signer_apk_file(signature_file, new_apk_file_dir, new_apk_file_name)
+    parse_axml_file = "AndroidManifest_parse.xml"
+    APKPlugin.parse_amxl(axml_file, parse_axml_file)
+    apk_name, apk_package, app_version_name = APKPlugin.get_apk_info(parse_axml_file)
+    FilePlugin.remove_path_file(parse_axml_file)
+    # 加密dex文件
+    apk_file_xed_name = apk_file_name.replace(".apk", "_xed.apk")
+    JGApplication.encrypt_dex(apk_file_dir, aes_key, aes_iv)
+    ZipPlugin.un_zip_file(proxy_aar_file, "proxy_aar_temp")
+    APKPlugin.change_jar_to_dex("proxy_aar_temp/classes.jar")
+    FilePlugin.move_file("proxy_aar_temp/classes.dex", f"{apk_file_dir}/classes.dex")
+    ZipPlugin.make_zip_dir_files(apk_file_dir, apk_file_xed_name)
+    FilePlugin.remove_path_file(apk_file_dir)
+    # 替换axml
+    APKPlugin.unzip_apk_file(apk_file_xed_name, apk_file_dir)
+    FilePlugin.remove_path_file(apk_file_xed_name)
+    JGApplication.change_apk_manifest_txt(axml_file, proxy_application_name, apk_package, app_version_name)
+    apk_file_temp_name = apk_file_name.replace(".apk", "_temp.apk")
+    APKPlugin.zip_apk_file(apk_file_dir, apk_file_temp_name)
+    FilePlugin.remove_path_file(apk_file_dir)
+    APKPlugin.signer_apk_file(signature_file, apk_file_temp_name, apk_file_temp_name.replace("_temp.apk", "_signer.apk"))
+    FilePlugin.remove_path_file(apk_file_temp_name)

@@ -4,9 +4,9 @@ from python.plugin.FilePlugin import FilePlugin
 
 class CacheUtil(object):
 
-    def __init__(self, key_model):
-        self.cache_file_name = "main_build_apk.ini"
+    def __init__(self, key_model, cache_file_name="main_build_apk.ini"):
         self.key_model = key_model
+        self.cache_file_name = cache_file_name
 
     # 读取缓存
     def read_value_from_cache(self, key, default=""):
