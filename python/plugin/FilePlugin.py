@@ -122,9 +122,9 @@ class FilePlugin:
         for root, dirs, files in os.walk(filePath):
             for dir in dirs:
                 old_dir = os.path.join(root, dir)  # 原来的文件路径
-                print("old_dir=" + old_dir)
+                # print("old_dir=" + old_dir)
                 new_dir = old_dir.replace(old_name, new_name)
-                print("new_dir=" + new_dir)
+                # print("new_dir=" + new_dir)
                 if old_dir != new_dir:
                     os.rename(old_dir, new_dir)  # 重命名
 
@@ -147,7 +147,7 @@ class FilePlugin:
                     fileWrite = open(filename, 'w', encoding='UTF-8')
                     for s in lines:
                         result = s.replace(old_name, new_name)
-                        print(result)
+                        # print(result)
                         fileWrite.write(result)  # replace是替换，write是写入
                     fileRead.close()
                     fileWrite.close()  # 关闭文件

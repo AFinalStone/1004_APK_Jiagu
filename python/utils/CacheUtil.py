@@ -16,7 +16,7 @@ class CacheUtil(object):
             dict_model = dict_cache[self.key_model]
             text = dict_model[key]
         except Exception as e:
-            print(e)
+            print(key + "读取失败")
             text = default
         return text
 
@@ -27,7 +27,7 @@ class CacheUtil(object):
         try:
             dict_model = dict_cache[self.key_model]
         except Exception as e:
-            print(e)
+            print(key + "写入失败")
             dict_model = {}
         dict_model.update({key: value})
         dict_cache.update({self.key_model: dict_model})
