@@ -1,0 +1,16 @@
+apply plugin: 'java-library'
+apply plugin: 'java'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+jar {
+    manifest {
+        // 这里指定main class
+        attributes 'Main-Class': 'com.bigzhao.xml2axml.test.Main'
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8

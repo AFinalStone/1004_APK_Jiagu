@@ -6,7 +6,7 @@ from python.plugin.FilePlugin import FilePlugin
 from python.plugin.GitPlugin import GitPlugin
 
 
-class MakeApkApplication(object):
+class MakeApkApplication:
 
     @staticmethod
     def createLocalPropertiesFile(sourceDir, fileName, root_sdk_dir):

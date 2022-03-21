@@ -22,6 +22,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Dmitry Skiba
@@ -152,8 +153,9 @@ public class AXMLPrinter {
     }
 
     private static void log(String format, Object... arguments) {
-        String temp = String.format(format, arguments);
-        mStringContent.append(temp).append("\n");
+        byte[] temp = String.format(format, arguments).getBytes(StandardCharsets.UTF_8);
+        String result = new String(temp);
+        mStringContent.append(result).append("\n");
 //        mStringContent.append(temp).append("\n");
 //        System.out.printf(format, arguments);
 //        System.out.println();

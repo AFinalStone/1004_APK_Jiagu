@@ -5,7 +5,7 @@ import zipfile
 class ZipPlugin:
 
     @staticmethod
-    def make_zip_dir_files(source_dir, output_filename=None):
+    def make_zip_dir(source_dir, output_filename=None):
         """
         压缩指定文件夹
         :param source_dir:
@@ -23,7 +23,7 @@ class ZipPlugin:
         zip_file.close()
 
     @staticmethod
-    def make_zip(source_file, output_filename):
+    def make_zip_file(source_file, output_filename):
         """
         压缩指定文件
         :param source_file:
