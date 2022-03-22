@@ -1,4 +1,4 @@
-str = "花间____01";
+str = "小米之家"
 str_utf8 = str.encode("UTF-8")
 str_gbk = str.encode("GBK")
 

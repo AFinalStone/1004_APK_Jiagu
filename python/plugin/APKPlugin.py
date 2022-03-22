@@ -41,22 +41,23 @@ class APKPlugin:
             raise Exception("打包新的apk失败")
 
     @staticmethod
-    def signer_apk_file(signer_file, apk_file, signer_apk_file=None):
+    def signer_apk_file(signer_file, signer_content, apk_file, signer_apk_file=None):
         """
         为apk签名
-        :param signer_apk_file:
         :param signer_file:
+        :param signer_content:
         :param apk_file:
+        :param signer_apk_file:
         :return:
         """
         if signer_apk_file is None:
             signer_apk_file = apk_file.replace(".apk", "_signer.apk")
-        print("开始为新的apk签名...")
-        cmd_signer = f'java -jar lib\\apk_signer.jar sign  --ks {signer_file} --ks-key-alias yeyan --ks-pass pass:yeyan123 --key-pass  pass:yeyan123 --out {signer_apk_file} {apk_file}'
+        print("开始为apk签名...")
+        cmd_signer = f'java -jar lib\\apk_signer.jar sign  --ks {signer_file} {signer_content} --out {signer_apk_file} {apk_file}'
         if os.system(cmd_signer) == 0:
-            print("成功为新的apk签名")
+            print("成功为apk签名")
         else:
-            raise Exception("为新的apk签名失败")
+            raise Exception("apk签名失败")
         os.remove(signer_apk_file + ".idsig")
 
     @staticmethod
@@ -117,7 +118,8 @@ class APKPlugin:
         """
         if par_file is None:
             par_file = axml_file.replace(".xml", "_new.xml")
-        cmd = f'java -jar lib\\apk_axml_print.jar {axml_file} {par_file}'
+        # cmd = f'java -jar lib\\apk_axml_print.jar {axml_file} {par_file}'
+        cmd = f'java -jar lib\\apk_axml_tool.jar d {axml_file} {par_file}'
         if os.system(cmd) == 0:
             print("成功解析axml文件")
         else:
