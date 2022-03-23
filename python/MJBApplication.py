@@ -21,8 +21,34 @@ class MJBApplication:
         if apk_dir is None:
             self.apk_temp = apk_file_name.replace(".apk", ".zip")
 
-    # 创建马甲包
-    def create_majiabao_apk(self, new_app_name=None, new_app_logo=None):
+    # # 先压缩apk文件目录、再签名的方式创建马甲包
+    # def create_majiabao_apk_by_zip(self, new_app_name=None, new_app_logo=None):
+    #     if not os.path.isfile(self.apk_file_name):
+    #         print(f"没有在当前目录找到{self.apk_file_name}文件")
+    #         return
+    #     if not os.path.isfile(self.signer_file):
+    #         print(f"没有在当前目录找到{self.signer_file}签名文件")
+    #         return
+    #     if (new_app_name is None or len(new_app_name) == 0) and new_app_logo is None:
+    #         print("新的应用名和logo不能同时为空")
+    #         return
+    #     try:
+    #         if not os.path.exists(self.apk_dir):
+    #             ZipPlugin.un_zip_file(self.apk_file_name, self.apk_dir)
+    #         self.__change_app_name_by_axml(new_app_name)
+    #         self.__change_app_logo(new_app_logo)
+    #         new_apk_temp_name = new_app_name + "_temp.apk"
+    #         new_apk_name = new_app_name + ".apk"
+    #         ZipPlugin.make_zip_dir(self.apk_dir, new_apk_temp_name)
+    #         APKPlugin.signer_apk_file(self.signer_file, new_apk_temp_name, new_apk_name)
+    #         FilePlugin.remove_path_file(new_apk_temp_name)
+    #         # FilePlugin.remove_path_file(self.apk_dir)
+    #     except Exception as err:
+    #         # 可能是缺少JDK或者jar包
+    #         print(str(err) + "，可能是缺少JDK或者Jar包")
+
+    # 直接给zip文件追加文件、再签名的方式创建马甲包，速度更快
+    def __create_majiabao_apk_by_add(self, new_app_name=None, new_app_logo=None):
         if not os.path.isfile(self.apk_file_name):
             print(f"没有在当前目录找到{self.apk_file_name}文件")
             return
@@ -67,7 +93,7 @@ class MJBApplication:
             new_app_logo = new_app_info.split(",")[1]
             print("开始生成马甲包...")
             print("应用名称=" + new_app_name + " 应用图标=" + new_app_logo)
-            self.create_majiabao_apk(new_app_name, new_app_logo)
+            self.__create_majiabao_apk_by_add(new_app_name, new_app_logo)
         FilePlugin.remove_path_file(self.apk_temp)
         FilePlugin.remove_path_file(self.axml_decode_path)
 

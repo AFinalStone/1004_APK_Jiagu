@@ -70,7 +70,7 @@ class APKPlugin:
         """
         if dex_file is None:
             jar_file = dex_file.replace(".dex", ".jar")
-        cmd = f'dex2jar-2.0/d2j-dex2jar.bat  --output {dex_file} {jar_file}'
+        cmd = f'dex2jar-2.0\\d2j-dex2jar.bat  --output {jar_file} {dex_file}'
         if os.system(cmd) == 0:
             print("成功把dex文件转化为jar文件")
         else:
@@ -86,6 +86,7 @@ class APKPlugin:
         """
         if dex_file is None:
             dex_file = jar_file.replace(".jar", ".dex")
+        # cmd = f'jar2dex\\dx.bat --dex --output {dex_file} {jar_file}'
         cmd = f'dx --dex --output {dex_file} {jar_file}'
         if os.system(cmd) == 0:
             print("成功把jar文件转化为dex文件")
