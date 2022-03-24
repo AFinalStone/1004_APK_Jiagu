@@ -2,7 +2,10 @@ apply plugin: 'java-library'
 apply plugin: 'java'
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api 'commons-io:commons-io:2.6'
+    api 'net.sf.kxml:kxml2:2.3.0'
+    api 'org.apache.commons:commons-lang3:3.4'
 }
 
 jar {

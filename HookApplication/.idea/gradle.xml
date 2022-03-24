@@ -12,9 +12,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/AXMLPrinter" />
             <option value="$PROJECT_DIR$/Proxy_Core" />
             <option value="$PROJECT_DIR$/Proxy_Tools" />
+            <option value="$PROJECT_DIR$/Xml2Axml" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

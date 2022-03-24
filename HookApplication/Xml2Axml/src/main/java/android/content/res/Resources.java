@@ -1,6 +1,5 @@
 package android.content.res;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
@@ -9,31 +8,34 @@ import java.util.HashMap;
  */
 public class Resources {
 
-    public HashMap<String,Integer> attrMap=new HashMap<>();
+    public HashMap<String, Integer> attrMap = new HashMap<>();
 
-    private void init(){
+    private void init() {
         try {
             Field[] fs = android.R.attr.class.getFields();
-            for (Field f : fs) attrMap.put(f.getName(), (Integer)f.get(null));
-        }catch (Exception e){
+            for (Field f : fs) {
+                attrMap.put(f.getName(), (Integer) f.get(null));
+//                System.out.println("=======" + f.getName());
+            }
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Resources(){
+    public Resources() {
         init();
     }
 
     public int getIdentifier(String name, String type, String pkg) {
-        if ("android".equals(pkg)&&"attr".equals(type)){
-            Integer x=attrMap.get(name);
-            if (x==null) System.out.println("attr not found: " + name);
+        if ("android".equals(pkg) && "attr".equals(type)) {
+            Integer x = attrMap.get(name);
+            if (x == null) System.out.println("attr not found: " + name);
             else {
-                System.out.format("@%s:%s/%s=0x%x\n",pkg,type,name,x);
+//                System.out.format("@%s:%s/%s=0x%x\n",pkg,type,name,x);
                 return x;
             }
-        }else{
-            System.out.format("@%s:%s/%s=0x%x\n",pkg,type,name,0);
+        } else {
+//            System.out.format("@%s:%s/%s=0x%x\n",pkg,type,name,0);
         }
         return 0;
     }

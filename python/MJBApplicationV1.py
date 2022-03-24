@@ -9,15 +9,20 @@ from python.plugin.ZipPlugin import ZipPlugin
 
 class MJBApplicationV1:
 
-    def __init__(self, apk_file_name, signer_file, app_logo_name, apk_dir=None):
+    def __init__(self, apk_file_name, app_logo_name, signer_file, signer_content, apk_dir=None):
         self.apk_file_name = apk_file_name
         self.app_logo_name = app_logo_name
         self.signer_file = signer_file
+        self.signer_content = signer_content
+        self.axml_decode_path = None
+        self.app_logo_path_in_apk = None
         if apk_dir is None:
             self.apk_dir = apk_file_name.replace(".apk", "")
+        if apk_dir is None:
+            self.apk_temp = apk_file_name.replace(".apk", ".zip")
 
     # 先压缩apk文件目录、再签名的方式创建马甲包
-    def __create_majiabao_apk_by_zip(self, new_app_name=None, new_app_logo=None):
+    def create_majiabao_apk_by_zip(self, new_app_name=None, new_app_logo=None):
         if not os.path.isfile(self.apk_file_name):
             print(f"没有在当前目录找到{self.apk_file_name}文件")
             return
@@ -35,7 +40,7 @@ class MJBApplicationV1:
             new_apk_temp_name = new_app_name + "_temp.apk"
             new_apk_name = new_app_name + ".apk"
             ZipPlugin.make_zip_dir(self.apk_dir, new_apk_temp_name)
-            APKPlugin.signer_apk_file(self.signer_file, new_apk_temp_name, new_apk_name)
+            APKPlugin.signer_apk_file(self.signer_file, self.signer_content, new_apk_temp_name, new_apk_name)
             FilePlugin.remove_path_file(new_apk_temp_name)
             # FilePlugin.remove_path_file(self.apk_dir)
         except Exception as err:
@@ -58,7 +63,7 @@ class MJBApplicationV1:
             new_app_logo = new_app_info.split(",")[1]
             print("开始生成马甲包...")
             print("应用名称=" + new_app_name + " 应用图标=" + new_app_logo)
-            self.__create_majiabao_apk_by_zip(new_app_name, new_app_logo)
+            self.create_majiabao_apk_by_zip(new_app_name, new_app_logo)
         FilePlugin.remove_path_file(self.apk_dir)
 
     # 修改软件名称
@@ -67,7 +72,9 @@ class MJBApplicationV1:
     def __change_app_name_by_axml(self, new_name="奇乐直播"):
         axml_path = f"{self.apk_dir}/AndroidManifest.xml"
         axml_decode_path = "AndroidManifest_decode.xml"
-        APKPlugin.decode_apk_by_axml_print(axml_path, axml_decode_path)
+        APKPlugin.decode_amxl(axml_path, axml_decode_path)
+        APKPlugin.encode_amxl(axml_decode_path, axml_path)
+        APKPlugin.decode_amxl(axml_path, axml_decode_path)
         ele_root = etree.parse(axml_decode_path, etree.XMLParser(encoding="utf-8"))
         ele_application = ele_root.find("application")
         if new_name is None:

@@ -1,6 +1,5 @@
-from python.MJBApplication import MJBApplication
+from python.MJBApplicationV2 import MJBApplicationV2
 from python.plugin.FilePlugin import FilePlugin
-from python.plugin.ZipPlugin import ZipPlugin
 from python.utils.CacheUtil import CacheUtil
 
 if __name__ == '__main__':
@@ -25,7 +24,5 @@ if __name__ == '__main__':
     input("输入任意内容以便开始任务")
     file_content = FilePlugin.read_str_from_file(config_file_name)
     app_info_list = file_content.split("\n")
-    mjb = MJBApplication(apk_file_name, app_logo, signature_file, signature_content)
+    mjb = MJBApplicationV2(apk_file_name, app_logo, signature_file, signature_content)
     mjb.create_majiabao_list_apk(app_info_list)
-    # mjb.create_majiabao_apk("奇乐直播001", "logo.png")
-    # ZipPlugin.add_file_into_zip("logo.png", "res/mipmap-xxhdpi-v4/logo.png", "奇乐直播.zip")

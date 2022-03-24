@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 import android.content.res.AXmlResourceParser;
 import org.xmlpull.v1.XmlPullParser;
@@ -163,7 +164,9 @@ public class AXMLPrinter {
 	}
 
 	private static void log(String format,Object...arguments) {
-		out.printf(format,arguments);
+		byte[] temp = String.format(format, arguments).getBytes(StandardCharsets.UTF_8);
+		String result = new String(temp);
+		out.print(result);
 		out.println();
 	}
 	

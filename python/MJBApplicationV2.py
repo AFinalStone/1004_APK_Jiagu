@@ -7,7 +7,7 @@ from python.plugin.FilePlugin import FilePlugin
 from python.plugin.ZipPlugin import ZipPlugin
 
 
-class MJBApplication:
+class MJBApplicationV2:
 
     def __init__(self, apk_file_name, app_logo_name, signer_file, signer_content, apk_dir=None):
         self.apk_file_name = apk_file_name
@@ -48,7 +48,7 @@ class MJBApplication:
     #         print(str(err) + "，可能是缺少JDK或者Jar包")
 
     # 直接给zip文件追加文件、再签名的方式创建马甲包，速度更快
-    def __create_majiabao_apk_by_add(self, new_app_name=None, new_app_logo=None):
+    def create_majiabao_apk_by_add(self, new_app_name=None, new_app_logo=None):
         if not os.path.isfile(self.apk_file_name):
             print(f"没有在当前目录找到{self.apk_file_name}文件")
             return
@@ -68,7 +68,7 @@ class MJBApplication:
             print(f"开始打包{new_apk_name}...")
             new_apk_temp = new_app_name + "_temp.apk"
             FilePlugin.copy_file(self.apk_temp, new_apk_temp)
-            # ZipPlugin.add_file_into_zip(axml_encode_path, "AndroidManifest.xml", new_apk_temp)
+            ZipPlugin.add_file_into_zip(axml_encode_path, "AndroidManifest.xml", new_apk_temp)
             ZipPlugin.add_file_into_zip(new_app_logo, self.app_logo_path_in_apk, new_apk_temp)
             APKPlugin.signer_apk_file(self.signer_file, self.signer_content, new_apk_temp, new_apk_name)
             FilePlugin.remove_path_file(new_apk_temp)
@@ -93,7 +93,7 @@ class MJBApplication:
             new_app_logo = new_app_info.split(",")[1]
             print("开始生成马甲包...")
             print("应用名称=" + new_app_name + " 应用图标=" + new_app_logo)
-            self.__create_majiabao_apk_by_add(new_app_name, new_app_logo)
+            self.create_majiabao_apk_by_add(new_app_name, new_app_logo)
         FilePlugin.remove_path_file(self.apk_temp)
         FilePlugin.remove_path_file(self.axml_decode_path)
 
@@ -107,8 +107,10 @@ class MJBApplication:
             # 创建明文axml，并移除原来的axml
             axml_path = f"{self.apk_dir}/AndroidManifest.xml"
             self.axml_decode_path = "AndroidManifest_decode.xml"
-            APKPlugin.decode_apk_by_axml_print(axml_path, self.axml_decode_path)
-            # FilePlugin.remove_path_file(axml_path)
+            APKPlugin.decode_amxl(axml_path, self.axml_decode_path)
+            APKPlugin.encode_amxl(self.axml_decode_path, axml_path)
+            APKPlugin.decode_amxl(axml_path, self.axml_decode_path)
+            FilePlugin.remove_path_file(axml_path)
             # 获取当前app的logo文件路径，并移除该文件
             for root, dirs, files in os.walk(self.apk_dir):
                 for file_name in files:

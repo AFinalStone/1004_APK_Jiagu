@@ -103,28 +103,11 @@ class APKPlugin:
         """
         if par_file is None:
             par_file = axml_file.replace(".xml", "_new.xml")
-        cmd = f'java -jar lib\\apk_axml_tool.jar d {axml_file} {par_file}'
+        cmd = f'java -jar lib\\xml2axml.jar d {axml_file} {par_file}'
         if os.system(cmd) == 0:
             print("成功解析axml文件")
         else:
             raise Exception("axml文件解析失败") @ staticmethod
-
-    @staticmethod
-    def decode_apk_by_axml_print(axml_file, par_file=None):
-        """
-        解析 android_manifest_file
-        :param axml_file:
-        :param par_file:
-        :return:
-        """
-        if par_file is None:
-            par_file = axml_file.replace(".xml", "_new.xml")
-        # cmd = f'java -jar lib\\apk_axml_print.jar {axml_file} {par_file}'
-        cmd = f'java -jar lib\\apk_axml_tool.jar d {axml_file} {par_file}'
-        if os.system(cmd) == 0:
-            print("成功解析axml文件")
-        else:
-            raise Exception("axml文件解析失败")
 
     @staticmethod
     def encode_amxl(axml_file, par_file=None):
@@ -136,7 +119,7 @@ class APKPlugin:
         """
         if par_file is None:
             par_file = axml_file.replace(".xml", "_new.xml")
-        cmd = f'java -jar lib\\apk_axml_tool.jar e {axml_file} {par_file}'
+        cmd = f'java -jar lib\\xml2axml.jar e {axml_file} {par_file}'
         if os.system(cmd) == 0:
             print("成功加密axml文件")
         else:

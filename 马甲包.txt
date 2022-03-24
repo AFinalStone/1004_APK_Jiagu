@@ -1,5 +1,3 @@
-01花间直播,logo.png
-02花间直播01,logo.png
-03花间直播02,logo.png
-04花间直播03,logo.png
-05花间直播04,logo.png
+01花间直播01,logo_guotang.png
+02花间直播02,logo_huajian.png
+03花间直播03,logo_mixinzhibo.png
