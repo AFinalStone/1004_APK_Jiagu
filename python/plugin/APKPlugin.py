@@ -80,6 +80,7 @@ class APKPlugin:
     def change_jar_to_dex(jar_file, dex_file=None):
         """
         把jar转化成dex
+        此方法需要配置本地的环境变量，把Android_SDK\build-tools\28.0.3目录路径添加到环境变量中
         :param jar_file:
         :param dex_file:
         :return:
