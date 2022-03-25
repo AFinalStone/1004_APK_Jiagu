@@ -9,17 +9,15 @@ from python.plugin.ZipPlugin import ZipPlugin
 
 class MJBApplicationV1:
 
-    def __init__(self, apk_file_name, app_logo_name, signer_file, signer_content, apk_dir=None):
+    def __init__(self, apk_file_name, app_logo_name, signer_file, signer_content):
         self.apk_file_name = apk_file_name
         self.app_logo_name = app_logo_name
         self.signer_file = signer_file
         self.signer_content = signer_content
         self.axml_decode_path = None
         self.app_logo_path_in_apk = None
-        if apk_dir is None:
-            self.apk_dir = apk_file_name.replace(".apk", "")
-        if apk_dir is None:
-            self.apk_temp = apk_file_name.replace(".apk", ".zip")
+        self.apk_dir = apk_file_name.replace(".apk", "")
+        self.apk_temp = apk_file_name.replace(".apk", ".zip")
 
     # 先压缩apk文件目录、再签名的方式创建马甲包
     def create_majiabao_apk_by_zip(self, new_app_name=None, new_app_logo=None):

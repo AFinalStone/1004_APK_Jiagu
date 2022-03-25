@@ -1,3 +1,3 @@
-01花间直播01,logo_guotang.png
-02花间直播02,logo_huajian.png
-03花间直播03,logo_mixinzhibo.png
+She01Application,logo_guotang.png
+She02Application,logo_huajian.png
+She03Application,logo_mixinzhibo.png

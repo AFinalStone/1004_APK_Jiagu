@@ -1,5 +1,6 @@
 import os
 import shutil
+from binascii import a2b_hex
 
 
 class FilePlugin:
@@ -89,6 +90,33 @@ class FilePlugin:
             shutil.copyfile(srcfile, dstfile)
         else:
             shutil.copyfile(srcfile, dstfile)
+
+    @staticmethod
+    def copy_file_by_hex(srcfile, dstfile):
+        """
+        拷贝文件
+        :param srcfile:
+        :param dstfile:
+        :return:
+        """
+        if not os.path.isfile(srcfile):
+            print("%s not exit!" % (srcfile))
+            return
+        if dstfile.find("/") == -1:
+            fpath, fname = None, dstfile
+        else:
+            fpath, fname = os.path.split(dstfile)
+        if fpath is not None and not os.path.exists(fpath):
+            os.makedirs(fpath)
+        # hexdata = "0123456789ABCDEF"  # 注意：str中的十六进制码的数量必须是偶数个，否则 a2b_hex 函数运行会出错；
+        # "A~F"的大小写无所谓；
+        # 除了"0~9"、"A~F"外，不要包含其他字符，例如：空格、\t
+        with open(srcfile, 'rb') as frb:
+            with open(dstfile, "wb") as fwb:
+                hexdata = frb.read().hex()
+                fwb.write(a2b_hex(hexdata))  # 把16进制字符串转化为2进制
+            frb.close()
+            fwb.close()
 
     @staticmethod
     def move_file(srcfile, dstfile):

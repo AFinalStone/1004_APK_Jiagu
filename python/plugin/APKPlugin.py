@@ -1,5 +1,6 @@
 import os
 import xml.dom.minidom
+from binascii import a2b_hex
 
 
 class APKPlugin:
@@ -95,6 +96,27 @@ class APKPlugin:
             raise Exception("jar文件转化为dex文件失败")
 
     @staticmethod
+    def change_arsc_content(arsc_file, old_content, new_content, new_arsc_file=None):
+        """
+         修改resource.arsc文件
+        """
+        if new_arsc_file is None:
+            new_arsc_file = arsc_file.replace(".arsc", "_new.arsc")
+        try:
+            fr = open(arsc_file, 'rb')
+            content = fr.read()
+            fr.close()
+            hex_content = content.hex()
+            target_hex = old_content.encode("UTF-8").hex()
+            hex_content = hex_content.replace(target_hex, new_content.encode("UTF-8").hex())
+            hex_content = a2b_hex(hex_content)
+            fw = open(new_arsc_file, 'wb')
+            fw.write(hex_content)
+            fw.close();
+        except Exception as e:
+            print(e.args)
+
+    @staticmethod
     def decode_amxl(axml_file, par_file=None):
         """
         解析 android_manifest_file
@@ -141,23 +163,3 @@ class APKPlugin:
         ele_application = document_element.getElementsByTagName("application")[0]
         app_name = ele_application.getAttribute("android:name")
         return app_name, apk_package, app_version_name
-
-    #
-    # @staticmethod
-    # def encrypt_apk_dex_by_java(apk_file_name, proxy_app_aar, new_apk_file_name=None):
-    #     """
-    #     加密dex文件为xed文件
-    #     :param proxy_app_aar:
-    #     :param apk_file_name:
-    #     :param new_apk_file_name:
-    #     :return:
-    #     """
-    #     if new_apk_file_name is None:
-    #         new_apk_file_name = apk_file_name.replace(".apk", "_01.apk")
-    #     app_name, apk_package, app_version_name = APKPlugin.get_apk_info(apk_file_name)
-    #     package_middle = apk_package.split(".")[1]
-    #     cmd_aes_dex = f'java -jar lib\\apk_proxy_tools.jar {apk_file_name} {proxy_app_aar} {signer}{package_middle} {new_apk_file_name}'
-    #     if os.system(cmd_aes_dex) == 0:
-    #         print("dex文件加密成功")
-    #     else:
-    #         print("dex文件加密失败")
