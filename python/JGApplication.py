@@ -98,7 +98,7 @@ class JGApplication:
         # 加密dex文件
         self.__encrypt_dex(apk_dir, "1234567890123456", "1234567890123456")
         # 添加壳app
-        FilePlugin.move_file("lib/proxy_application.dex", f"{apk_dir}/classes.dex")
+        FilePlugin.copy_file("lib/proxy_application.dex", f"{apk_dir}/classes.dex")
         ZipPlugin.make_zip_dir(apk_dir, apk_file_xed_name)
         FilePlugin.remove_path_file(apk_dir)
         # 重新签名
