@@ -1,4 +1,3 @@
-# 加固
 import os
 import re
 
@@ -6,6 +5,7 @@ from python.plugin.FilePlugin import FilePlugin
 from python.plugin.GitPlugin import GitPlugin
 
 
+# 对指定代码仓库分支进行下载，切换分支，自动打包的操作
 class MakeApkApplication:
 
     @staticmethod

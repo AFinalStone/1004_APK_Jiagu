@@ -6,7 +6,7 @@ from python.plugin.APKPlugin import APKPlugin
 from python.plugin.FilePlugin import FilePlugin
 
 
-# 基准包
+# 基准包打包，支持动态修改app的logo和app_name(长度不受限制)
 class JZBApplication(Thread):
 
     def __init__(self, apk_name, signer_file, apk_dir=None):

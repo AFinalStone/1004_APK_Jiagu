@@ -11,6 +11,7 @@ import android.os.Process;
 import android.text.TextUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -55,10 +56,18 @@ public class ProxyApplication extends Application {
                     String name = file.getName();
                     if (name.endsWith(".xed")) {
                         try {
+                            byte[] bytes = Utils.getBytes(file);
+                            byte[] decrypt = EncryptUtils.getInstance().decrypt(bytes);
                             if (!dexDir.exists()) {
                                 dexDir.mkdirs();
                             }
-                            SevenZUtils.unCompress(file, dexDir);
+                            File fileDex = new File(dexDir, file.getName());
+                            FileOutputStream fos = new FileOutputStream(fileDex);
+                            fos.write(decrypt);
+                            fos.flush();
+                            fos.close();
+                            dexFilesList.add(fileDex);
+//                            SevenZUtils.unCompress(file, dexDir);
                             //已经解密过了
                             for (File dex : dexDir.listFiles()) {
                                 dexFilesList.add(dex);

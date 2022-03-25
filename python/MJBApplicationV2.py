@@ -95,10 +95,10 @@ class MJBApplicationV2:
     # 批量创建马甲包
     def create_majiabao_list_apk(self, new_app_info_list):
         if not os.path.isfile(self.apk_file_name):
-            print("没有在当前目录找到AAAA.apk文件")
+            print(f"没有在当前目录找到{self.apk_file_name}文件")
             return
         if not os.path.isfile(self.signer_file):
-            print("没有在当前目录找到AAAA.jks签名文件")
+            print(f"没有在当前目录找到{self.signer_file}签名文件")
             return
         if len(new_app_info_list) == 0:
             print("马甲包名称列表不能为空")
