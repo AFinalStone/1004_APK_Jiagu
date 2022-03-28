@@ -35,7 +35,8 @@ main_majiabao.ini配置文件的信息介绍：
 
 [自定义加固软件](自定义加固软件)
 
-加密apk文件中的*.dex类型的文件，并为app添加壳的代理application，在软件启动的时候自动解密*.dex文件
+- 加密apk文件中的*.dex类型的文件，并为app添加壳的代理application，在软件启动的时候自动解密*.dex文件；
+- 代理proxy_application的代码在HookApplication,加密*.dex文件所使用的是AES算法,可以根据代码自己定制具体的key，iv，修改壳app的包名路径
 
 ```
 {
