@@ -47,6 +47,7 @@ main_majiabao.ini配置文件的信息介绍：
   }
 }
 ```
+main_jiagu.ini配置文件的信息介绍：
 
 - 1.apk_file_name字段为当前要加固的apk文件名称；
 - 2.signature_file为签名文件名称，signature_content为签名密码信息字段
