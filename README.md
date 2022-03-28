@@ -8,3 +8,5 @@
 ### 2.自定义加固脚本 
 
 >main_jiagu.py
+
+加密apk文件中的*.dex类型的文件，并为app添加壳的代理application，在软件启动的时候自动解密*.dex文件
