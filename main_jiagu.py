@@ -1,4 +1,5 @@
 from python.JGApplication import JGApplication
+from python.plugin.HookModulePlugin import HookModulePlugin
 from python.utils.CacheUtil import CacheUtil
 
 if __name__ == '__main__':

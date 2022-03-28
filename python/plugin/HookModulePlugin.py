@@ -25,8 +25,8 @@ class HookModulePlugin:
         :param clean_cache:
         :return:
         """
-        code_dir = r"HookApplication"
-        gradle_task = ":Proxy_Core:assembleRelease"
+        code_dir = "HookApplication"
+        gradle_task = "Proxy_Core:assembleRelease"
         if os.path.exists(code_dir):
             origin_cwd = os.getcwd()
             os.chdir(code_dir)
