@@ -1,3 +1,5 @@
-She01Application,logo_guotang.png
-She02Application,logo_huajian.png
-She03Application,logo_mixinzhibo.png
+AAAA,logo_guotang.png
+果糖拉拉播,logo_huajian.png
+果糖BBB播,logo_mixinzhibo.png
+果糖力播,logo_mixinzhibo.png
+果糖天播,logo_mixinzhibo.png

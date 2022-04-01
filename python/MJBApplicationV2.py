@@ -1,5 +1,7 @@
 import os
+import time
 
+from dateutil.parser import parse
 from lxml import etree
 
 from python.plugin.APKPlugin import APKPlugin
@@ -100,9 +102,12 @@ class MJBApplicationV2:
         if not os.path.isfile(self.signer_file):
             print(f"没有在当前目录找到{self.signer_file}签名文件")
             return
-        if len(new_app_info_list) == 0:
+        lenth = len(new_app_info_list)
+        if lenth == 0:
             print("马甲包名称列表不能为空")
             return
+        start_time = str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+        print(f"开始时间================={start_time}")
         for new_app_info in new_app_info_list:
             new_app_name = new_app_info.split(",")[0]
             new_app_logo = new_app_info.split(",")[1]
@@ -114,6 +119,11 @@ class MJBApplicationV2:
                 self.create_majiabao_apk_by_add_arsc(new_app_name, new_app_logo)
         FilePlugin.remove_path_file(self.apk_temp)
         FilePlugin.remove_path_file(self.axml_arsc_decode_path)
+        end_time = str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+        print(f"结束时间================={end_time}")
+        print(f"总用时================={str((parse(end_time) - parse(start_time)).total_seconds())}秒")
+        print(f"打包数量================={lenth}个")
+        print(f"单个包平均用时================={str((parse(end_time) - parse(start_time)).total_seconds() / lenth)}秒")
 
     def __init_axml_and_logo(self):
         """
