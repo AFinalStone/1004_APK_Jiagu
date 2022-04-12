@@ -1,11 +1,11 @@
 from python.plugin.APKPlugin import APKPlugin
 from python.plugin.ZipPlugin import ZipPlugin
 
-name = "奇乐直播V1"
+name = "test"
 
-# APKPlugin.decode_amxl(f"{name}/AndroidManifest.xml", f"{name}/AndroidManifest_decode.xml")
+APKPlugin.decode_amxl(f"{name}/AndroidManifest.xml", f"{name}/AndroidManifest_decode.xml")
 
-APKPlugin.encode_amxl(f"{name}/AndroidManifest_decode.xml", f"{name}/AndroidManifest.xml")
+# APKPlugin.encode_amxl(f"{name}/AndroidManifest_decode.xml", f"{name}/AndroidManifest.xml")
 
 # ZipPlugin.update_file_dir_change_time(name)
 # ZipPlugin.un_zip_file(f"{name}.apk", name)
