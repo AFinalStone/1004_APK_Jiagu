@@ -61,15 +61,16 @@ class AESPlugin:
 
     # 加密文件
     def encrypt_byte_by_jar(self, file, encrypt_file):
-        cmd = f'java -jar lib\\encrypt_tool.jar {file} {encrypt_file} {self.key} {self.iv}'
+        cmd = f'java -jar lib\\endecrypt_tool.jar {file} {encrypt_file} {self.key} {self.iv} encrypt'
         if os.system(cmd) == 0:
             print("文件加密成功")
         else:
             print("文件加密失败")
-    #
-    # def decrypt_byte_by_java(self, file, encrypt_file):
-    #     cmd = f'java -jar lib\\encrypt_tool.jar {file} {encrypt_file} {self.key} {self.iv}'
-    #     if os.system(cmd) == 0:
-    #         print("文件加密成功")
-    #     else:
-    #         raise Exception("文件加密失败")
+
+    # 解密文件
+    def decrypt_byte_by_java(self, file, encrypt_file):
+        cmd = f'java -jar lib\\endecrypt_tool.jar {file} {encrypt_file} {self.key} {self.iv} decrypt'
+        if os.system(cmd) == 0:
+            print("文件解密成功")
+        else:
+            raise Exception("文件解密失败")

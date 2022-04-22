@@ -1,9 +1,16 @@
-from python.plugin.APKPlugin import APKPlugin
-from python.plugin.ZipPlugin import ZipPlugin
+from python.plugin.AESPlugin import AESPlugin
 
 name = "test"
 
-APKPlugin.decode_amxl(f"{name}/AndroidManifest.xml", f"{name}/AndroidManifest_decode.xml")
+# 加解密Axml文件
+# APKPlugin.decode_amxl(f"{name}/AndroidManifest.xml", f"{name}/AndroidManifest_decode.xml")
+# APKPlugin.encode_amxl(f"{name}/AndroidManifest_decode.xml", f"{name}/AndroidManifest.xml")
+
+# 使用AES算法加解密文件
+# path = "file_input/app-mixin-release_res.zip"
+# AESPlugin("1234567890123456", "1234567890123456").encrypt_byte_by_jar(path, path.replace(".zip", ".piz"))
+path02 = "file_output/app-mixin-release_res.piz"
+AESPlugin("1234567890123456", "1234567890123456").decrypt_byte_by_java(path02, path02.replace(".piz", ".zip"))
 
 # APKPlugin.encode_amxl(f"{name}/AndroidManifest_decode.xml", f"{name}/AndroidManifest.xml")
 
